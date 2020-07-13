@@ -21,10 +21,10 @@ API Rest - SpringBoot
     
 # Puesta en marcha
 
-- 1) Clonar el repositorio.
-- 2) En Springboot Tool suite 4:
--   a) Importar proyecto maven.
--   b) Seleccionar el repo descargado.
--   c) Ejecutar como SpringBoot App
+1) Clonar el repositorio.
+2) En Springboot Tool suite 4:
+    - a) Importar proyecto maven.
+    - b) Seleccionar el repo descargado.
+    - c) Ejecutar como SpringBoot App
 
   
