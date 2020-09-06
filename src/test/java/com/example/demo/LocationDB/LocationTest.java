@@ -1,38 +1,38 @@
-package com.example.demoLocationDB;
+package com.example.demo.LocationDB;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-
-import org.junit.Before;
-
-import com.example.demo.LocationDB.Location;
-
-
-
-public class LocationTest {
+class LocationTest {
+	
+	@Autowired
+	Location location; 
+	
 	private int id=1;
 	private String name="Test";
 	private int area_m2=100;
-	private Location location; 
 	
-	@Before
+	@BeforeEach
 	public void setUpLocation(){
+		location = new Location(id, name, area_m2);
 		location.setId(id);
 		location.setName(name);
 		location.setArea_m2(area_m2);
 		System.out.println("Entro Before");
-	}
-	
+	}	
 	
 	@Test 
 	public void with_parameterized_constructor() throws Exception{
-		System.out.println("Entro Test 2");
 		location = new Location(id, name, area_m2);
 		assertNotNull(location);
 		assertEquals(id, location.getId());
 		assertEquals(name, location.getName());
 		assertEquals(area_m2, location.getArea_m2());
 	}
+	
+	
+
 }
