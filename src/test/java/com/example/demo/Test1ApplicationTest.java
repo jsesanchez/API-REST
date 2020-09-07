@@ -6,5 +6,6 @@ class Test1ApplicationTest {
 
 	@Test
 	void contextLoads() {
+		Test1Application.main(new String[] {});
 	}
 }

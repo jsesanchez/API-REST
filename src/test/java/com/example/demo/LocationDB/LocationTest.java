@@ -21,7 +21,6 @@ class LocationTest {
 		location.setId(id);
 		location.setName(name);
 		location.setArea_m2(area_m2);
-		System.out.println("Entro Before");
 	}	
 	
 	@Test 

@@ -10,32 +10,23 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.LocationDB.Location;
 import com.example.demo.service.ILocationRepo;
 import com.example.demo.service.LocationServiceImp;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebMvcTest
+@SpringBootTest
 class LocationControllerTest {
-	
-	@Autowired
-	private MockMvc mocMvc;
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Mock
 	private LocationServiceImp service;
 	
-	@MockBean
+	@Mock
 	private ILocationRepo repositorio;
 	
 	@InjectMocks
-	private LocationController locationController;
+	private LocationController locationController = new LocationController();
 	
 	Location location; 
 	Location location2; 
@@ -52,7 +43,6 @@ class LocationControllerTest {
 		location.setId(id);
 		location.setName(name);
 		location.setArea_m2(area_m2);
-		
 		location2 = new Location(id, name, area_m2);
 		location2.setId(id2);
 		location2.setName(name2);
@@ -66,29 +56,50 @@ class LocationControllerTest {
 		listLocation.add(location);
 		listLocation.add(location2);
 		Mockito.when(service.listar()).thenReturn(listLocation);
-		assertNotNull(listLocation);
-		assertEquals(id, listLocation.get(id).getId());
-		assertEquals(name, listLocation.get(id).getName());
-		assertEquals(area_m2, listLocation.get(id).getArea_m2());
-		assertEquals(id2, listLocation.get(id2).getId());
-		assertEquals(name2, listLocation.get(id2).getName());
-		assertEquals(area_m2_2, listLocation.get(id2).getArea_m2());
+		List<Location> listlocation2 = locationController.listar();
+		assertNotNull(listlocation2);
+		assertEquals(id, listlocation2.get(id).getId());
+		assertEquals(name, listlocation2.get(id).getName());
+		assertEquals(area_m2, listlocation2.get(id).getArea_m2());
+		assertEquals(id2, listlocation2.get(id2).getId());
+		assertEquals(name2, listlocation2.get(id2).getName());
+		assertEquals(area_m2_2, listlocation2.get(id2).getArea_m2());
 	}
 	@Test
 	void ListarIDtest() throws Exception{
+				
 		Mockito.when(service.listarID(id)).thenReturn(location);
-		assertNotNull(location);
-		assertEquals(id, location.getId());
-		assertEquals(name, location.getName());
-		assertEquals(area_m2, location.getArea_m2());
+		Location result = locationController.listarID(id);
+		assertNotNull(result);
+		assertEquals(id, result.getId());
+		assertEquals(name, result.getName());
+		assertEquals(area_m2, result.getArea_m2());
+		
 	}
 	@Test
 	void agregarTest() throws Exception{
-		Mockito.when(service.add(location)).thenReturn(null);
+		Mockito.when(service.add(location)).thenReturn(location);
+		Location result = locationController.agregar(location);
+		assertNotNull(result);
+		assertEquals(id, result.getId());
+		assertEquals(name, result.getName());
+		assertEquals(area_m2, result.getArea_m2());
+		
 	}
 	@Test
 	void eliminarTest() throws Exception{
-		Mockito.when(service.delete(id)).thenReturn(null);
+		Mockito.when(locationController.delete(id)).thenReturn(null);
+		
+	}
+	@Test
+	void editarTest() throws Exception{
+		Mockito.when(service.edit(location)).thenReturn(location);
+		Location result = locationController.editar(location, id);
+		assertNotNull(result);
+		assertEquals(id, result.getId());
+		assertEquals(name, result.getName());
+		assertEquals(area_m2, result.getArea_m2());
+		
 	}
 	
 }

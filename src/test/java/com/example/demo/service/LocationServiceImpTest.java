@@ -4,26 +4,26 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import java.util.List;
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.LocationDB.Location;
-import com.example.demo.controller.LocationController;
 
-@WebMvcTest
+@SpringBootTest
 class LocationServiceImpTest {
 	
-	@MockBean
+	@Mock
 	private ILocationRepo repositorio;
 	
 	@InjectMocks
-	private LocationServiceImp service;
+	private LocationServiceImp service = new LocationServiceImp();
 	
 	Location location; 
 	Location location2; 
@@ -52,18 +52,46 @@ class LocationServiceImpTest {
 	@Test
 	void ListarIDtest() throws Exception{
 		Mockito.when(repositorio.findById(id)).thenReturn(location);
-		assertNotNull(location);
-		assertEquals(id, location.getId());
-		assertEquals(name, location.getName());
-		assertEquals(area_m2, location.getArea_m2());
+		Location result = service.listarID(id);
+		assertNotNull(result);
+		assertEquals(id, result.getId());
+		assertEquals(name, result.getName());
+		assertEquals(area_m2, result.getArea_m2());
 	}
 	
 	
 	@Test
 	void addtest() throws Exception{
-		Mockito.when(repositorio.save(location)).thenReturn(null);
+		Mockito.when(repositorio.save(location)).thenReturn(location);
+		Location result = service.add(location);
+		assertNotNull(result);
+		assertEquals(id, result.getId());
+		assertEquals(name, result.getName());
+		assertEquals(area_m2, result.getArea_m2());
 	}
 	
+
+	@Test
+	void edittest() throws Exception{
+		Mockito.when(repositorio.save(location)).thenReturn(location);
+		Location result = service.edit(location);
+		assertNotNull(result);
+		assertEquals(id, result.getId());
+		assertEquals(name, result.getName());
+		assertEquals(area_m2, result.getArea_m2());
+	}
+	
+	@Test
+	void deletetest() throws Exception{
+		Location result = service.delete(id);
+	}
+	
+	@Test
+	void deleteNotNulltest() throws Exception{
+		Mockito.when(repositorio.findById(id)).thenReturn(location);
+		Location result = service.listarID(id);
+		Location result2 = service.delete(id);
+	}
 	
 	@Test
 	void ListAlltest() throws Exception{
@@ -71,13 +99,14 @@ class LocationServiceImpTest {
 		listLocation.add(location);
 		listLocation.add(location2);
 		Mockito.when(repositorio.findAll()).thenReturn(listLocation);
-		assertNotNull(listLocation);
-		assertEquals(id, listLocation.get(id).getId());
-		assertEquals(name, listLocation.get(id).getName());
-		assertEquals(area_m2, listLocation.get(id).getArea_m2());
-		assertEquals(id2, listLocation.get(id2).getId());
-		assertEquals(name2, listLocation.get(id2).getName());
-		assertEquals(area_m2_2, listLocation.get(id2).getArea_m2());
+		List<Location> listlocation2 = service.listar();
+		assertNotNull(listlocation2);
+		assertEquals(id, listlocation2.get(id).getId());
+		assertEquals(name, listlocation2.get(id).getName());
+		assertEquals(area_m2, listlocation2.get(id).getArea_m2());
+		assertEquals(id2, listlocation2.get(id2).getId());
+		assertEquals(name2, listlocation2.get(id2).getName());
+		assertEquals(area_m2_2, listlocation2.get(id2).getArea_m2());
 	}
 	
 	
