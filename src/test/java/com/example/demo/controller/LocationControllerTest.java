@@ -5,18 +5,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.example.demo.LocationDB.Location;
 import com.example.demo.service.ILocationRepo;
 import com.example.demo.service.LocationServiceImp;
 
-@SpringBootTest
+@DataJpaTest 
 class LocationControllerTest {
 	
 	@Mock
@@ -67,7 +68,6 @@ class LocationControllerTest {
 	}
 	@Test
 	void ListarIDtest() throws Exception{
-				
 		Mockito.when(service.listarID(id)).thenReturn(location);
 		Location result = locationController.listarID(id);
 		assertNotNull(result);
